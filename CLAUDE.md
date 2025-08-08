@@ -20,6 +20,27 @@ uv sync
 
 # Add new dependency
 uv add package_name
+
+# Add development dependency
+uv add --dev package_name
+```
+
+### Code Quality
+```bash
+# Format code (black + isort)
+./format.sh
+
+# Run linting checks (flake8 + mypy)
+./lint.sh
+
+# Run complete quality check (format + lint + tests)
+./check-all.sh
+
+# Individual tool commands
+uv run black backend/ main.py      # Format with black
+uv run isort backend/ main.py      # Sort imports
+uv run flake8 backend/ main.py     # Style checking
+uv run mypy backend/ main.py       # Type checking
 ```
 
 ### Environment Setup
