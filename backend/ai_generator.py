@@ -1,9 +1,11 @@
+from typing import Any, Dict, List, Optional
+
 import openai
-from typing import List, Optional, Dict, Any
+
 
 class AIGenerator:
     """Handles interactions with Anthropic's Claude API for generating responses"""
-    
+
     # Static system prompt template for sequential function calling
     SYSTEM_PROMPT_TEMPLATE = """You are an AI assistant specialized in course materials and educational content with access to comprehensive functions for course information.
 
@@ -52,141 +54,138 @@ All responses must be:
 Provide only the direct answer to what was asked, incorporating all gathered information.
 
 {conversation_context}"""
-    
+
     def __init__(self, api_key: str, model: str, base_url: str = None):
         self.client = openai.OpenAI(api_key=api_key, base_url=base_url)
         self.model = model
-        
+
         # Pre-build base API parameters
-        self.base_params = {
-            "model": self.model,
-            "temperature": 0,
-            "max_tokens": 800
-        }
-    
-    def generate_response(self, query: str,
-                         conversation_history: Optional[str] = None,
-                         tools: Optional[List] = None,
-                         tool_manager=None,
-                         max_tool_rounds: int = 2) -> str:
+        self.base_params = {"model": self.model, "temperature": 0, "max_tokens": 800}
+
+    def generate_response(
+        self,
+        query: str,
+        conversation_history: Optional[str] = None,
+        tools: Optional[List] = None,
+        tool_manager=None,
+        max_tool_rounds: int = 2,
+    ) -> str:
         """
         Generate AI response with support for sequential function calling.
-        
+
         Args:
             query: The user's question or request
             conversation_history: Previous messages for context
             tools: Available functions the AI can use
             tool_manager: Manager to execute functions
             max_tool_rounds: Maximum number of function execution rounds (default 2)
-            
+
         Returns:
             Generated response as string
         """
-        
+
         # Build system content with function round information
-        system_content = self._build_system_content(conversation_history, max_tool_rounds)
-        
+        system_content = self._build_system_content(
+            conversation_history, max_tool_rounds
+        )
+
         # Initialize conversation with system and user messages
         messages = [
             {"role": "system", "content": system_content},
-            {"role": "user", "content": query}
+            {"role": "user", "content": query},
         ]
-        
+
         # Sequential function execution loop
         for round_num in range(1, max_tool_rounds + 1):
             # Make API call with functions available
             response = self._make_api_call(messages, tools)
-            
+
             # Check if tools are requested
             if response.choices[0].finish_reason != "tool_calls":
                 # GPT provided direct response, no tools needed
                 return response.choices[0].message.content
-            
+
             # Verify function manager is available
             if not tool_manager:
                 return "Function use requested but no tool manager available"
-            
+
             # Add GPT's response (with tool calls) to conversation
-            messages.append({
-                "role": "assistant", 
-                "content": response.choices[0].message.content,
-                "tool_calls": response.choices[0].message.tool_calls
-            })
-            
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": response.choices[0].message.content,
+                    "tool_calls": response.choices[0].message.tool_calls,
+                }
+            )
+
             # Execute tools and add results to conversation
             tool_results = self._execute_tools(response, tool_manager)
             messages.extend(tool_results)
-        
+
         # After max rounds, make final API call without tools
         final_response = self._make_api_call(messages, functions=None)
         return final_response.choices[0].message.content
-    
-    def _build_system_content(self, conversation_history: Optional[str], max_tool_rounds: int) -> str:
+
+    def _build_system_content(
+        self, conversation_history: Optional[str], max_tool_rounds: int
+    ) -> str:
         """Build system prompt with conversation history and tool round information"""
         conversation_context = (
             f"\n\nPrevious conversation:\n{conversation_history}"
-            if conversation_history else ""
+            if conversation_history
+            else ""
         )
-        
+
         return self.SYSTEM_PROMPT_TEMPLATE.format(
-            max_tool_rounds=max_tool_rounds,
-            conversation_context=conversation_context
+            max_tool_rounds=max_tool_rounds, conversation_context=conversation_context
         )
-    
-    def _make_api_call(self, messages: List[Dict[str, Any]], 
-                       functions: Optional[List] = None):
+
+    def _make_api_call(
+        self, messages: List[Dict[str, Any]], functions: Optional[List] = None
+    ):
         """Make single API call with error handling"""
-        api_params = {
-            **self.base_params,
-            "messages": messages
-        }
-        
+        api_params = {**self.base_params, "messages": messages}
+
         # Add tools if provided (OpenAI now uses tools instead of functions)
         if functions:
             # Convert function definitions to tool format
             tools = []
             for func in functions:
-                tools.append({
-                    "type": "function",
-                    "function": func
-                })
+                tools.append({"type": "function", "function": func})
             api_params["tools"] = tools
             api_params["tool_choice"] = "auto"
-        
+
         try:
             return self.client.chat.completions.create(**api_params)
         except Exception as e:
             raise RuntimeError(f"API call failed: {str(e)}")
-    
+
     def _execute_tools(self, response, tool_manager) -> List[Dict[str, Any]]:
         """Execute tool calls from response and return formatted results"""
         tool_results = []
-        
+
         for tool_call in response.choices[0].message.tool_calls:
             try:
                 import json
+
                 # Parse tool arguments
                 arguments = json.loads(tool_call.function.arguments)
-                
+
                 # Execute the tool
-                result = tool_manager.execute_tool(
-                    tool_call.function.name,
-                    **arguments
-                )
-                
+                result = tool_manager.execute_tool(tool_call.function.name, **arguments)
+
                 # Add tool result message
-                tool_results.append({
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": result
-                })
+                tool_results.append(
+                    {"role": "tool", "tool_call_id": tool_call.id, "content": result}
+                )
             except Exception as e:
                 # Handle tool execution errors gracefully
-                tool_results.append({
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": f"Tool execution error: {str(e)}"
-                })
-        
+                tool_results.append(
+                    {
+                        "role": "tool",
+                        "tool_call_id": tool_call.id,
+                        "content": f"Tool execution error: {str(e)}",
+                    }
+                )
+
         return tool_results
-    
