@@ -1,0 +1,100 @@
+INFO:     Will watch for changes in these directories: ['/Users/CPeach/_Learn/claude-code/DeepLearningAI/RagChatbot/starting-ragchatbot-codebase/backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [10407] using WatchFiles
+INFO:     Started server process [10429]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Loading initial documents...
+Course already exists: Advanced Retrieval for AI with Chroma - skipping
+Course already exists: Prompt Compression and Query Optimization - skipping
+Course already exists: Building Towards Computer Use with Anthropic - skipping
+Course already exists: MCP: Build Rich-Context AI Apps with Anthropic - skipping
+Loaded 0 courses with 0 chunks
+INFO:     127.0.0.1:51366 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51387 - "POST /api/query HTTP/1.1" 500 Internal Server Error
+WARNING:  WatchFiles detected changes in 'config.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10429]
+INFO:     Started server process [10745]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Loading initial documents...
+Course already exists: Advanced Retrieval for AI with Chroma - skipping
+Course already exists: Prompt Compression and Query Optimization - skipping
+Course already exists: Building Towards Computer Use with Anthropic - skipping
+Course already exists: MCP: Build Rich-Context AI Apps with Anthropic - skipping
+Loaded 0 courses with 0 chunks
+INFO:     127.0.0.1:51396 - "POST /api/query HTTP/1.1" 500 Internal Server Error
+WARNING:  WatchFiles detected changes in 'config.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10745]
+INFO:     Started server process [10954]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Loading initial documents...
+Course already exists: Advanced Retrieval for AI with Chroma - skipping
+Course already exists: Prompt Compression and Query Optimization - skipping
+Course already exists: Building Towards Computer Use with Anthropic - skipping
+Course already exists: MCP: Build Rich-Context AI Apps with Anthropic - skipping
+Loaded 0 courses with 0 chunks
+INFO:     127.0.0.1:51420 - "POST /api/query HTTP/1.1" 500 Internal Server Error
+WARNING:  WatchFiles detected changes in 'config.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10954]
+WARNING:  WatchFiles detected changes in 'ai_generator.py'. Reloading...
+INFO:     Started server process [11257]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_generator.py'. Reloading...
+INFO:     Started server process [11367]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [11478]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_generator.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [11478]
+WARNING:  WatchFiles detected changes in 'ai_generator.py'. Reloading...
+INFO:     Started server process [11647]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [11718]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Loading initial documents...
+Course already exists: Advanced Retrieval for AI with Chroma - skipping
+Course already exists: Prompt Compression and Query Optimization - skipping
+Course already exists: Building Towards Computer Use with Anthropic - skipping
+Course already exists: MCP: Build Rich-Context AI Apps with Anthropic - skipping
+Loaded 0 courses with 0 chunks
+INFO:     127.0.0.1:51524 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51551 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51570 - "GET /api/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51577 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51629 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51629 - "GET /style.css?v=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51630 - "GET /script.js?v=11 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51630 - "GET /api/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51630 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51637 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51638 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51643 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56885 - "GET /style.css?v=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56886 - "GET /script.js?v=11 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56886 - "GET /api/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56897 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56897 - "GET /style.css?v=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56898 - "GET /script.js?v=11 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56897 - "GET /api/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56900 - "POST /api/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56907 - "POST /api/query HTTP/1.1" 200 OK

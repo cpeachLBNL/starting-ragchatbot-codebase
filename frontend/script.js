@@ -5,7 +5,7 @@ const API_URL = '/api';
 let currentSessionId = null;
 
 // DOM elements
-let chatMessages, chatInput, sendButton, totalCourses, courseTitles;
+let chatMessages, chatInput, sendButton, totalCourses, courseTitles, newChatButton;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButton = document.getElementById('sendButton');
     totalCourses = document.getElementById('totalCourses');
     courseTitles = document.getElementById('courseTitles');
+    newChatButton = document.getElementById('newChatButton');
     
     setupEventListeners();
     createNewSession();
@@ -29,6 +30,8 @@ function setupEventListeners() {
         if (e.key === 'Enter') sendMessage();
     });
     
+    // New chat button
+    newChatButton.addEventListener('click', createNewSession);
     
     // Suggested questions
     document.querySelectorAll('.suggested-item').forEach(button => {
@@ -122,10 +125,31 @@ function addMessage(content, type, sources = null, isWelcome = false) {
     let html = `<div class="message-content">${displayContent}</div>`;
     
     if (sources && sources.length > 0) {
+        // Process sources to create organized list
+        const sourceItems = sources.map((source, index) => {
+            let sourceContent;
+            // Handle object sources with display and link properties
+            if (source && typeof source === 'object' && source.display) {
+                if (source.link) {
+                    // Create clickable link that opens in new tab
+                    sourceContent = `<a href="${source.link}" target="_blank" rel="noopener noreferrer" class="source-link">${source.display}</a>`;
+                } else {
+                    // Plain text for sources without links
+                    sourceContent = `<span class="source-text">${source.display}</span>`;
+                }
+            } else {
+                // Handle string sources for backward compatibility
+                sourceContent = `<span class="source-text">${typeof source === 'string' ? source : String(source)}</span>`;
+            }
+            return `<div class="source-item">${sourceContent}</div>`;
+        });
+        
         html += `
             <details class="sources-collapsible">
-                <summary class="sources-header">Sources</summary>
-                <div class="sources-content">${sources.join(', ')}</div>
+                <summary class="sources-header">Sources (${sources.length})</summary>
+                <div class="sources-content">
+                    ${sourceItems.join('')}
+                </div>
             </details>
         `;
     }

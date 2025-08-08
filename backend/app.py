@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import os
 
 from config import config
@@ -40,10 +40,15 @@ class QueryRequest(BaseModel):
     query: str
     session_id: Optional[str] = None
 
+class SourceObject(BaseModel):
+    """Model for source citation with optional link"""
+    display: str
+    link: Optional[str] = None
+
 class QueryResponse(BaseModel):
     """Response model for course queries"""
     answer: str
-    sources: List[str]
+    sources: List[SourceObject]
     session_id: str
 
 class CourseStats(BaseModel):
@@ -65,9 +70,22 @@ async def query_documents(request: QueryRequest):
         # Process query using RAG system
         answer, sources = rag_system.query(request.query, session_id)
         
+        # Convert sources to SourceObject format
+        source_objects = []
+        for source in sources:
+            if isinstance(source, dict):
+                # New format with display and link
+                source_objects.append(SourceObject(
+                    display=source.get('display', ''),
+                    link=source.get('link')
+                ))
+            else:
+                # Backward compatibility for string sources
+                source_objects.append(SourceObject(display=str(source)))
+        
         return QueryResponse(
             answer=answer,
-            sources=sources,
+            sources=source_objects,
             session_id=session_id
         )
     except Exception as e:
@@ -116,4 +134,4 @@ class DevStaticFiles(StaticFiles):
     
     
 # Serve static files for the frontend
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="static")
+app.mount("/", DevStaticFiles(directory="../frontend", html=True), name="static")
