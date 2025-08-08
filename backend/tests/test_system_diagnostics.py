@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from test_fixtures import create_mock_config, print_test_section
+from .test_fixtures import create_mock_config, print_test_section
 from config import config
 from rag_system import RAGSystem
 from vector_store import VectorStore

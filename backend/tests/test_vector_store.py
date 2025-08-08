@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch, MagicMock
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from test_fixtures import MockData, print_test_section
+from .test_fixtures import MockData, print_test_section
 from vector_store import VectorStore, SearchResults
 from models import Course, Lesson, CourseChunk
 

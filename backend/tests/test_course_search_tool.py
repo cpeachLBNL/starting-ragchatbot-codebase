@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from test_fixtures import (
+from .test_fixtures import (
     MockVectorStore, MockData, print_test_section,
     assert_search_results_format
 )
