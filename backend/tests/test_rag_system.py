@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch, MagicMock
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from test_fixtures import (
+from .test_fixtures import (
     create_mock_config, MockAnthropicClient, print_test_section
 )
 from rag_system import RAGSystem
